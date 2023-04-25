@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Word Game</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			text-align: center;
+			background-color: #f8f8f8;
+		}
+
+		h1 {
+			margin-top: 50px;
+			font-size: 36px;
+			color: #333;
+		}
+
+		#stage {
+			margin-top: 50px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		input[type="range"] {
+			width: 300px;
+			margin-bottom: 20px;
+		}
+
+		input[type="text"] {
+			padding: 10px;
+			border-radius: 5px;
+			border: none;
+			background-color: #f2f2f2;
+			margin-bottom: 20px;
+			width: 300px;
+			font-size: 18px;
+			color: #333;
+			text-align: center;
+			outline: none;
+		}
+
+		input[type="button"] {
+			padding: 10px 20px;
+			border-radius: 5px;
+			border: none;
+			background-color: #333;
+			color: #fff;
+			font-size: 18px;
+			cursor: pointer;
+			transition: all 0.3s ease;
+		}
+
+		input[type="button"]:hover {
+			background-color: #666;
+		}
+
+		#word {
+			margin-top: 20px;
+			font-size: 24px;
+			color: #333;
+		}
+
+		#para {
+			font-size: 20px;
+			color: #333;
+			margin-bottom: 20px;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Word Game</h1>
+	
+	<div id="stage">
+		
+		<input type="range" min="5" max="10" id="difficulty" step="1" />
+		<input type="button" value="Begin" id="confirm" />
+	</div>
+
+	<p id="word"></p>
+
+	<script>
+
+var wordArray = [
+"adventure",
+"quest",
+"journey",
+"explore",
+"treasure",
+"discover",
+"mystery",
+"challenge",
+"excitement",
+"triumph"
+];
+
+
+var begin = document.getElementById("confirm");
+
+
+begin.addEventListener("click", clear1, false);
+function clear1(event){
+var remainingTime = 0;
+var difficulty = document.getElementById("difficulty");
+var beginButton = document.getElementById("confirm");
+var difficultyLevel=difficulty.value;
+console.log(difficultyLevel);
+
+difficulty.remove();
+beginButton.remove();
+
+var index=0;
+
+var display=document.getElementById("stage");
+
+var newTextElement = document.createElement("p");
+var text=document.createTextNode("Next word : " + wordArray[index]);
+newTextElement.setAttribute("id","para");
+newTextElement.appendChild(text);
+display.appendChild(newTextElement);
+
+
+var newInputFieldElement = document.createElement("input");
+newInputFieldElement.setAttribute("id", "addedText");
+newInputFieldElement.setAttribute("type","text");
+newInputFieldElement.autofocus = true;
+display.appendChild(newInputFieldElement);
+
+let addedText=document.getElementById("addedText");
+
+
+var timing= window.setInterval(tfunction,1000);
+function tfunction(){
+	remainingTime++;
+}
+
+var gameOver= window.setTimeout(over, 20000);
+function over(){
+	document.getElementById("word").style.color="red";
+    document.getElementById("word").style.fontSize="32px";
+    document.getElementById("word").innerHTML= "TIME'S UP <br> You got " + index + " out of 10 words";
+    document.getElementById("addedText").disabled = true;
+	document.getElementById("para").innerHTML='';
+	var reloadButton = document.createElement("button");
+	reloadButton.innerHTML = "Play Again";
+	reloadButton.onclick = function() {
+		location.reload();
+	};
+	display.appendChild(reloadButton);
+ 
+}
+
+
+
+addedText.addEventListener("keyup", (e) => {
+	
+if (index < difficultyLevel){
+	
+
+if (addedText.value === wordArray[index]) {
+
+index = index + 1;
+
+
+
+if (index == difficultyLevel){
+    var pp=document.getElementById("word");
+	var text1=document.createTextNode("Congratulations. Your time was:  " + remainingTime);
+	word.appendChild(text1);
+	newTextElement.remove();
+	newInputFieldElement.remove();
+	clearInterval(timing);
+	clearTimeout(gameOver);
+
+
+	var reloadButton = document.createElement("button");
+	reloadButton.innerHTML = "Play Again";
+	reloadButton.onclick = function() {
+		location.reload();
+	};
+	display.appendChild(reloadButton);
+
+	document.getElementById('addedText').value = '';
+	document.getElementById('addedText').disabled = true;
+}
+
+else
+{
+	
+	newTextElement.textContent = "Next word : " + wordArray[index];
+	document.getElementById('addedText').value = '';
+	
+}
+
+}
+
+}	
+}
+
+);
+
+
+}
+
+</script>
+</body>
+</html>
